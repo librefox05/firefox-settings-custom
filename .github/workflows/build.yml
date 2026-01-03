@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: main
+    paths-ignore:
+      - "**.md"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/archlinux/archlinux:latest
+      env:
+        GH_PAT: ${{ secrets.GH_TOKEN }}
+        USER: librefox05
+        REPO: librefox_arch
+      volumes:
+        - ${{ github.workspace }}:/work
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          pacman -Syyu --noconfirm base-devel \
+          dbus-glib \
+          gtk3 \
+          libxt \
+          nss \
+          mime-types \
+          python \
+          git
+          ls -la
+
+      - name: Build firefox
+        run: |
+          # create a user
+          useradd -m bot_the_builder
+
+          # permissions
+          chmod -R 777 /work && cd /work
+
+          #use maximum compression
+          REPLACE='COMPRESSZST=(zstd -c -z -q -19 -T0 -)'
+          FIND='COMPRESSZST=(zstd -c -T0 -)'
+
+          sed -i "s/$FIND/$REPLACE/g" /etc/makepkg.conf
+
+          #build firefox
+          su bot_the_builder -c 'cd /work && makepkg --noconfirm OPTIONS=-debug'
+
+          #generate database
+          repo-add "$REPO".db.tar.gz *.tar.zst
+
+          #set up
+          #remove symlinked files
+          rm "$REPO".db "$REPO".files
+
+          #use actual archives as db
+          mv "$REPO".db.tar.gz "$REPO".db
+          mv "$REPO".files.tar.gz "$REPO".files
+
+          #move files to x86_64
+          mkdir x86_64
+          mv "$REPO".{db,files} *.tar.zst x86_64
+
+      - name: Push to another repo
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.GH_TOKEN }}
+        with:
+          source_file: "x86_64"
+          destination_repo: "librefox05/librefox_arch"
+          destination_folder: "."
+          user_email: "github-actions[bot]@users.noreply.github.com"
+          user_name: "github-actions[bot]"
+          commit_message: "Automated file push"
