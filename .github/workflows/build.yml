@@ -32,7 +32,8 @@ jobs:
           nss \
           mime-types \
           python \
-          git
+          git \
+          firefox
           ls -la
 
       - name: Build firefox
@@ -50,7 +51,7 @@ jobs:
           sed -i "s/$FIND/$REPLACE/g" /etc/makepkg.conf
 
           #build firefox
-          su bot_the_builder -c 'cd /work && makepkg --noconfirm OPTIONS=-debug'
+          su bot_the_builder -c 'cd /work && makepkg --noconfirm -f'
 
           #generate database
           repo-add "$REPO".db.tar.gz *.tar.zst
