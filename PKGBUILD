@@ -7,8 +7,8 @@ provides=('firefox-settings-custom')
 conflicts=('firefox-settings-custom')
 pkgdesc="Custom firefox settings for a privacy first firefox experience(${_lang})"
 pkgver=154.0
-pkgrel=3
-tag=${pkgver}-3
+pkgrel=4
+tag=${pkgver}-4
 arch=('x86_64' 'aarch64')
 license=('MPL' 'GPL' 'LGPL')
 
