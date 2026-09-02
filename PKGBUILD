@@ -7,7 +7,7 @@ provides=('firefox-settings-custom')
 conflicts=('firefox-settings-custom')
 pkgdesc="Custom firefox settings for a privacy first firefox experience(${_lang})"
 pkgver=154.0
-pkgrel=4
+pkgrel=6
 tag=${pkgver}-4
 arch=('x86_64' 'aarch64')
 license=('MPL' 'GPL' 'LGPL')
@@ -19,9 +19,11 @@ depends=(
 source=(
   "librefox.cfg"
   "autoconfig.js"
+  "policies.json"
 )
 
 sha256sums=(
+  'SKIP'
   'SKIP'
   'SKIP'
 )
@@ -29,11 +31,13 @@ sha256sums=(
 package() {
   FF_PATH="usr/lib/firefox"
   FF_DEF_PATH="${FF_PATH}/defaults/pref"
+  FF_DIST_PATH="${FF_PATH}/distribution"
 
   # Install the package files
   install -d "${pkgdir}"/"${FF_PATH}"
-  mkdir -p ${pkgdir}/${FF_DEF_PATH}
+  mkdir -p ${pkgdir}/${FF_DEF_PATH} ${pkgdir}/"${FF_DIST_PATH}"
   cp autoconfig.js ${pkgdir}/"${FF_DEF_PATH}"
   cp librefox.cfg ${pkgdir}/${FF_PATH}
+  cp policies.json ${pkgdir}/${FF_DIST_PATH}
 
 }
