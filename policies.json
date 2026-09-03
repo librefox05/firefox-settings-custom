@@ -1,11 +1,7 @@
 {
   "policies": {
-    "DisableFeedbackCommands": true,
-    "DisableFirefoxStudies": true,
-    "DisablePocket": true,
     "DisableTelemetry": true,
     "NoDefaultBookmarks": true,
-    "DontCheckDefaultBrowser": true,
     "NetworkPrediction": false,
     "EnableTrackingProtection": {
       "Value": true,
@@ -17,27 +13,20 @@
       "Enabled": true
     },
     "FirefoxHome": {
-      "SponsoredPocket": false,
-      "Pocket": false,
-      "Highlights": false,
-      "Stories": false,
-      "SponsoredStories": false,
-      "SponsoredTopSites": false,
+      "Search": true,
       "TopSites": false,
-      "Locked": true,
-      "Snippets": false
+      "SponsoredTopSites": false,
+      "Highlights": false,
+      "Pocket": false,
+      "Stories": false,
+      "SponsoredPocket": false,
+      "SponsoredStories": false,
+      "Snippets": false,
+      "Locked": true
     },
     "Extensions": {
       "Install": [
         "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
-      ],
-      "Uninstall": [
-        "amazondotcom@search.mozilla.org",
-        "bing@search.mozilla.org",
-        "ebay@search.mozilla.org",
-        "google@search.mozilla.org",
-        "duckduckgo@search.mozilla.org",
-        "twitter@search.mozilla.org"
       ]
     },
     "ExtensionSettings": {
@@ -71,15 +60,28 @@
         }
       }
     },
-    "UserMessaging": {
-      "FeatureRecommendations": false,
-      "ExtensionRecommendations": false,
-      "WhatsNew": false,
-      "UrlbarInterventions": false,
-      "SkipOnboarding": true,
-      "FirefoxLabs": false,
-      "MoreFromMozilla": false,
-      "Locked": true
+     "UserMessaging": {
+	"ExtensionRecommendations": false,
+	"FeatureRecommendations": false,
+        "UrlbarInterventions": false,
+        "SkipOnboarding": true,
+        "MoreFromMozilla": true,
+        "FirefoxLabs": false,
+        "Locked": true
+    },
+     "SearchEngines": {
+      "Add": [
+        {
+          "Name": "Brave Search",
+          "URLTemplate": "https://search.brave.com/search?q={searchTerms}",
+          "Method": "GET",
+          "IconURL": "https://brave.com/static-assets/images/brave-favicon.png",
+          "Alias": "brave",
+          "Description": "Search the web with Brave Search",
+          "SuggestURLTemplate": "https://search.brave.com/api/suggest?q={searchTerms}"
+        }
+      ],
+      "Default": "Brave Search"
     }
   }
 }
